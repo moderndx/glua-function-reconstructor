@@ -1,5 +1,4 @@
-
-function dump_function_params(func_call)
+local function dump_function_params(func_call)
   local param_location = 2
   local func_param = debug.getlocal( func_call, 1 )
   local func_params = {}
@@ -11,7 +10,7 @@ function dump_function_params(func_call)
   return func_params
 end
 
-function dump_function(func_call)
+local function dump_function(func_call)
   local final_output = "function %s( %s )"
   local func_name = ""
   local func_param_string = ""
@@ -29,6 +28,8 @@ function dump_function(func_call)
   end
 
   if (!func_name) then error("Couldn't locate function") end
+
+  if (debug.getinfo(func_call).short_src == "[C]") then error("C Function, this cannot be reconstructed") end
 
   local dumped_params = dump_function_params(func_call)
 
